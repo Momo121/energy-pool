@@ -1,0 +1,2520 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>新能源海外信息网站池</title>
+    <style>
+        /* ============================================================
+               CSS Variables · Light & Dark 色板
+               ============================================================ */
+        :root {
+            --bg: #f5f7fb;
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --bg-hover: #f0f4ff;
+            --text: #172033;
+            --text-secondary: #344054;
+            --muted: #667085;
+            --line: #e4e7ec;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #eff6ff;
+            --accent-border: #bfdbfe;
+            --shadow: rgba(0, 0, 0, 0.06);
+            --shadow-lg: rgba(0, 0, 0, 0.15);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: 0.2s ease;
+            --s-bg: #dc2626;
+            --a-bg: #d97706;
+            --b-bg: #667085;
+            --tag-colors: {
+                "户储": #2563eb,
+                    "混逆": #7c3aed,
+                    "电池": #0891b2,
+                    "EMS": #059669,
+                    "BESS": #7c3aed,
+                    "光伏": #ea580c,
+                    "充电": #dc2626
+            }
+            --tag-bg: #f2f4f7;
+            --tag-text: #475467;
+            --toast-bg: #1e293b;
+            --toast-text: #f1f5f9;
+            --modal-overlay: rgba(0, 0, 0, 0.45);
+            --header-bg: #101828;
+            --header-text: #ffffff;
+            --header-sub: #cbd5e1;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not(.light) {
+                --bg: #0f1724;
+                --bg-card: #1a2332;
+                --bg-input: #1a2332;
+                --bg-hover: #263247;
+                --text: #e8edf5;
+                --text-secondary: #b0c0d4;
+                --muted: #8899b0;
+                --line: #2d3a4f;
+                --accent: #3b82f6;
+                --accent-hover: #60a5fa;
+                --accent-light: #1e293b;
+                --accent-border: #334155;
+                --shadow: rgba(0, 0, 0, 0.4);
+                --shadow-lg: rgba(0, 0, 0, 0.6);
+                --tag-bg: #2d3a4f;
+                --tag-text: #b0c0d4;
+                --toast-bg: #2d3a4f;
+                --toast-text: #e8edf5;
+                --modal-overlay: rgba(0, 0, 0, 0.7);
+                --header-bg: #0a0f18;
+                --header-text: #e8edf5;
+                --header-sub: #8899b0;
+            }
+        }
+
+        /* 手动暗黑模式覆盖 */
+        :root.dark {
+            --bg: #0f1724;
+            --bg-card: #1a2332;
+            --bg-input: #1a2332;
+            --bg-hover: #263247;
+            --text: #e8edf5;
+            --text-secondary: #b0c0d4;
+            --muted: #8899b0;
+            --line: #2d3a4f;
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+            --accent-light: #1e293b;
+            --accent-border: #334155;
+            --shadow: rgba(0, 0, 0, 0.4);
+            --shadow-lg: rgba(0, 0, 0, 0.6);
+            --tag-bg: #2d3a4f;
+            --tag-text: #b0c0d4;
+            --toast-bg: #2d3a4f;
+            --toast-text: #e8edf5;
+            --modal-overlay: rgba(0, 0, 0, 0.7);
+            --header-bg: #0a0f18;
+            --header-text: #e8edf5;
+            --header-sub: #8899b0;
+        }
+        :root.light {
+            --bg: #f5f7fb;
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --bg-hover: #f0f4ff;
+            --text: #172033;
+            --text-secondary: #344054;
+            --muted: #667085;
+            --line: #e4e7ec;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #eff6ff;
+            --accent-border: #bfdbfe;
+            --shadow: rgba(0, 0, 0, 0.06);
+            --shadow-lg: rgba(0, 0, 0, 0.15);
+            --tag-bg: #f2f4f7;
+            --tag-text: #475467;
+            --toast-bg: #1e293b;
+            --toast-text: #f1f5f9;
+            --modal-overlay: rgba(0, 0, 0, 0.45);
+            --header-bg: #101828;
+            --header-text: #ffffff;
+            --header-sub: #cbd5e1;
+        }
+
+        /* ============================================================
+               Reset & Base
+               ============================================================ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: Inter, "Microsoft YaHei", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background var(--transition), color var(--transition);
+            line-height: 1.5;
+        }
+        button {
+            cursor: pointer;
+            font: inherit;
+            border: none;
+            background: none;
+            color: inherit;
+        }
+        input,
+        select,
+        textarea {
+            font: inherit;
+            color: inherit;
+            background: var(--bg-input);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            font-size: 14px;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* ============================================================
+               Scrollbar
+               ============================================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--line);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--muted);
+        }
+
+        /* ============================================================
+               Header
+               ============================================================ */
+        header {
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 20px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+            transition: background var(--transition);
+        }
+        header h1 {
+            margin: 0 0 4px 0;
+            font-size: 24px;
+            letter-spacing: -0.3px;
+        }
+        .header-sub {
+            color: var(--header-sub);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .toolbar input,
+        .toolbar select,
+        .toolbar button {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--header-text);
+            border-radius: var(--radius-sm);
+            padding: 7px 12px;
+            font-size: 13px;
+            min-height: 36px;
+        }
+        .toolbar input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .toolbar input,
+        .toolbar select {
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .toolbar input:focus,
+        .toolbar select:focus {
+            background: rgba(255, 255, 255, 0.10);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+        }
+        .toolbar select option {
+            color: var(--text);
+            background: var(--bg-card);
+        }
+        .toolbar .primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            font-weight: 600;
+        }
+        .toolbar .primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+        }
+        .toolbar .secondary {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+        .toolbar .secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* ============================================================
+               Main Layout
+               ============================================================ */
+        main {
+            max-width: 1500px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* ============================================================
+               Stats
+               ============================================================ */
+        .stats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .stat {
+            background: var(--bg-card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            padding: 10px 16px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: background var(--transition), border-color var(--transition);
+        }
+        .stat b {
+            font-size: 20px;
+            margin-right: 4px;
+        }
+
+        /* ============================================================
+               Notice / 最近访问
+               ============================================================ */
+        .notice {
+            background: var(--bg-card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            padding: 10px 16px;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 16px;
+            transition: background var(--transition), border-color var(--transition);
+        }
+        .recent-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 8px 0 12px 0;
+            margin-bottom: 8px;
+            scrollbar-width: thin;
+        }
+        .recent-bar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .recent-bar::-webkit-scrollbar-thumb {
+            background: var(--line);
+            border-radius: 2px;
+        }
+        .recent-chip {
+            background: var(--bg-card);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 12px;
+            white-space: nowrap;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .recent-chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .recent-chip img {
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        /* ============================================================
+               Category & Grid
+               ============================================================ */
+        .category {
+            margin: 28px 0;
+        }
+        .cat-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--line);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+            transition: border-color var(--transition);
+        }
+        .cat-head h2 {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 600;
+        }
+        .cat-head .cat-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+        .cat-head .cat-meta select {
+            padding: 4px 8px;
+            font-size: 12px;
+            border-radius: 6px;
+            background: var(--bg-input);
+            border: 1px solid var(--line);
+            color: var(--text);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 12px;
+        }
+
+        /* ============================================================
+               Card
+               ============================================================ */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+            min-height: 200px;
+            position: relative;
+        }
+        .card:hover {
+            border-color: var(--accent-border);
+            box-shadow: 0 4px 16px var(--shadow);
+        }
+        .card-top {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .card-top .fav-btn {
+            font-size: 18px;
+            line-height: 1;
+            padding: 0;
+            background: none;
+            border: none;
+            color: var(--muted);
+            transition: color var(--transition);
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .card-top .fav-btn.on {
+            color: #f59e0b;
+        }
+        .card-top .fav-btn:hover {
+            transform: scale(1.15);
+        }
+        .card-top .site-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            background: var(--tag-bg);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-top .site-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .card-top .site-icon .fallback {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--muted);
+        }
+        .card-name {
+            font-weight: 700;
+            font-size: 15px;
+            flex: 1;
+            line-height: 1.3;
+        }
+        .badge {
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 2px 10px;
+            color: #fff;
+            white-space: nowrap;
+            flex-shrink: 0;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+        }
+        .badge.S {
+            background: var(--s-bg);
+        }
+        .badge.A {
+            background: var(--a-bg);
+        }
+        .badge.B {
+            background: var(--b-bg);
+        }
+
+        .card-meta {
+            font-size: 12px;
+            color: var(--muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 10px;
+        }
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            flex: 1;
+        }
+        .card-tags {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .card-tags .tag {
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+            background: var(--tag-bg);
+            color: var(--tag-text);
+            transition: background var(--transition), color var(--transition);
+        }
+        /* 标签色彩化 */
+        .card-tags .tag-tag-户储 {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        .card-tags .tag-tag-混逆 {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+        .card-tags .tag-tag-电池 {
+            background: #cffafe;
+            color: #0e7490;
+        }
+        .card-tags .tag-tag-EMS {
+            background: #d1fae5;
+            color: #047857;
+        }
+        .card-tags .tag-tag-BESS {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+        .card-tags .tag-tag-光伏 {
+            background: #ffedd5;
+            color: #c2410c;
+        }
+        .card-tags .tag-tag-充电 {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        @media (prefers-color-scheme: dark) {
+            .card-tags .tag-tag-户储 {
+                background: #1e293b;
+                color: #60a5fa;
+            }
+            .card-tags .tag-tag-混逆 {
+                background: #2e1a47;
+                color: #a78bfa;
+            }
+            .card-tags .tag-tag-电池 {
+                background: #164e63;
+                color: #22d3ee;
+            }
+            .card-tags .tag-tag-EMS {
+                background: #064e3b;
+                color: #34d399;
+            }
+            .card-tags .tag-tag-BESS {
+                background: #2e1a47;
+                color: #a78bfa;
+            }
+            .card-tags .tag-tag-光伏 {
+                background: #431407;
+                color: #fb923c;
+            }
+            .card-tags .tag-tag-充电 {
+                background: #450a0a;
+                color: #f87171;
+            }
+        }
+        :root.dark .card-tags .tag-tag-户储 {
+            background: #1e293b;
+            color: #60a5fa;
+        }
+        :root.dark .card-tags .tag-tag-混逆 {
+            background: #2e1a47;
+            color: #a78bfa;
+        }
+        :root.dark .card-tags .tag-tag-电池 {
+            background: #164e63;
+            color: #22d3ee;
+        }
+        :root.dark .card-tags .tag-tag-EMS {
+            background: #064e3b;
+            color: #34d399;
+        }
+        :root.dark .card-tags .tag-tag-BESS {
+            background: #2e1a47;
+            color: #a78bfa;
+        }
+        :root.dark .card-tags .tag-tag-光伏 {
+            background: #431407;
+            color: #fb923c;
+        }
+        :root.dark .card-tags .tag-tag-充电 {
+            background: #450a0a;
+            color: #f87171;
+        }
+
+        .card-updated {
+            font-size: 12px;
+            color: var(--muted);
+        }
+        .card-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .card-actions a,
+        .card-actions button {
+            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 6px;
+            background: var(--accent-light);
+            color: var(--accent);
+            border: 1px solid var(--accent-border);
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .card-actions a:hover,
+        .card-actions button:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .card-actions .danger {
+            background: #fee2e2;
+            color: #b91c1c;
+            border-color: #fecaca;
+        }
+        .card-actions .danger:hover {
+            background: #b91c1c;
+            color: #fff;
+            border-color: #b91c1c;
+        }
+        .card-checkbox {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .card-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        /* ============================================================
+               Empty state
+               ============================================================ */
+        .empty {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--muted);
+            background: var(--bg-card);
+            border: 1px dashed var(--line);
+            border-radius: var(--radius);
+            transition: background var(--transition), border-color var(--transition);
+        }
+        .empty .empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+        .empty .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .empty button {
+            margin-top: 12px;
+            padding: 8px 20px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            border: none;
+        }
+        .empty button:hover {
+            background: var(--accent-hover);
+        }
+
+        /* ============================================================
+               Modal
+               ============================================================ */
+        dialog {
+            border: 0;
+            border-radius: var(--radius);
+            padding: 0;
+            width: min(600px, 94vw);
+            max-height: 90vh;
+            box-shadow: 0 24px 80px var(--shadow-lg);
+            background: var(--bg-card);
+            color: var(--text);
+            transition: background var(--transition), color var(--transition);
+            overflow-y: auto;
+        }
+        dialog::backdrop {
+            background: var(--modal-overlay);
+            backdrop-filter: blur(2px);
+        }
+        .modal {
+            padding: 24px 28px;
+        }
+        .modal h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+        .modal .form {
+            display: grid;
+            gap: 12px;
+        }
+        .modal .form label {
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .modal .form .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 18px;
+        }
+        .modal-actions button {
+            padding: 8px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            border: 1px solid var(--line);
+            background: var(--bg-input);
+            color: var(--text);
+            transition: all var(--transition);
+        }
+        .modal-actions .primary {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .modal-actions .primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+        }
+
+        /* ============================================================
+               Toast
+               ============================================================ */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-width: 380px;
+            width: 100%;
+            pointer-events: none;
+        }
+        .toast {
+            background: var(--toast-bg);
+            color: var(--toast-text);
+            padding: 12px 18px;
+            border-radius: var(--radius-sm);
+            box-shadow: 0 8px 32px var(--shadow-lg);
+            font-size: 14px;
+            animation: slideUp 0.25s ease;
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            border-left: 4px solid var(--accent);
+        }
+        .toast.success {
+            border-left-color: #22c55e;
+        }
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+        .toast.warning {
+            border-left-color: #f59e0b;
+        }
+        .toast .toast-close {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 4px;
+        }
+        .toast .toast-close:hover {
+            color: var(--text);
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================================
+               Progress / 批量检查
+               ============================================================ */
+        .progress-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        .progress-track {
+            flex: 1;
+            height: 6px;
+            background: var(--line);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        .progress-label {
+            font-size: 13px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        /* ============================================================
+               Bulk bar (浮动批量操作条)
+               ============================================================ */
+        .bulk-bar {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 10px 20px;
+            box-shadow: 0 8px 40px var(--shadow-lg);
+            display: none;
+            align-items: center;
+            gap: 16px;
+            z-index: 50;
+            flex-wrap: wrap;
+            justify-content: center;
+            transition: background var(--transition), border-color var(--transition);
+        }
+        .bulk-bar.show {
+            display: flex;
+        }
+        .bulk-bar .bulk-info {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .bulk-bar button {
+            padding: 6px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid var(--line);
+            background: var(--bg-input);
+            color: var(--text);
+            transition: all var(--transition);
+        }
+        .bulk-bar .primary {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .bulk-bar .primary:hover {
+            background: var(--accent-hover);
+        }
+        .bulk-bar .danger {
+            background: #fee2e2;
+            color: #b91c1c;
+            border-color: #fecaca;
+        }
+        .bulk-bar .danger:hover {
+            background: #b91c1c;
+            color: #fff;
+            border-color: #b91c1c;
+        }
+
+        /* ============================================================
+               Responsive
+               ============================================================ */
+        @media (max-width: 700px) {
+            header {
+                padding: 16px;
+            }
+            header h1 {
+                font-size: 20px;
+            }
+            .toolbar {
+                gap: 6px;
+            }
+            .toolbar input,
+            .toolbar select,
+            .toolbar button {
+                font-size: 12px;
+                padding: 5px 10px;
+                min-height: 32px;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .modal .form .row {
+                grid-template-columns: 1fr;
+            }
+            .stats .stat {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+            .stats .stat b {
+                font-size: 17px;
+            }
+            main {
+                padding: 0 12px;
+            }
+            .bulk-bar {
+                bottom: 12px;
+                padding: 8px 14px;
+                width: 94%;
+                gap: 10px;
+            }
+            .bulk-bar .bulk-info {
+                font-size: 12px;
+            }
+            .bulk-bar button {
+                font-size: 12px;
+                padding: 4px 12px;
+            }
+            .cat-head h2 {
+                font-size: 17px;
+            }
+        }
+
+        /* ============================================================
+               Utilities
+               ============================================================ */
+        .hidden {
+            display: none !important;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .text-muted {
+            color: var(--muted);
+        }
+        .text-sm {
+            font-size: 13px;
+        }
+        .fw-600 {
+            font-weight: 600;
+        }
+
+        /* 加载旋转动画 */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--line);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* 列表视图切换 */
+        .view-toggle {
+            display: inline-flex;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+        .view-toggle button {
+            padding: 4px 12px;
+            font-size: 13px;
+            background: var(--bg-input);
+            border: none;
+            border-right: 1px solid var(--line);
+            color: var(--muted);
+            transition: all var(--transition);
+        }
+        .view-toggle button:last-child {
+            border-right: none;
+        }
+        .view-toggle button.active {
+            background: var(--accent);
+            color: #fff;
+        }
+        .view-toggle button:hover:not(.active) {
+            background: var(--bg-hover);
+        }
+
+        /* list 视图 */
+        .grid.list-view {
+            grid-template-columns: 1fr;
+        }
+        .grid.list-view .card {
+            flex-direction: row;
+            flex-wrap: wrap;
+            min-height: auto;
+            padding: 12px 16px;
+            align-items: center;
+        }
+        .grid.list-view .card>* {
+            flex: 1 1 auto;
+        }
+        .grid.list-view .card .card-top {
+            flex: 0 0 auto;
+            min-width: 200px;
+        }
+        .grid.list-view .card .card-desc {
+            flex: 2;
+            min-width: 150px;
+        }
+        .grid.list-view .card .card-actions {
+            flex: 0 0 auto;
+        }
+        @media (max-width: 700px) {
+            .grid.list-view .card {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .grid.list-view .card .card-top {
+                min-width: auto;
+            }
+            .grid.list-view .card .card-desc {
+                flex: auto;
+                min-width: auto;
+            }
+        }
+
+        /* 快捷提示 (键盘快捷键) */
+        .kbd-hint {
+            font-size: 11px;
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: inline-block;
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================================
+    HEADER
+    ============================================================ -->
+    <header>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;">
+            <div>
+                <h1>⚡ 新能源海外信息网站池</h1>
+                <div class="header-sub">产品测评 · 工程应用 · 政策法规 · 市场项目 · 菲律宾/东南亚</div>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                <button id="themeToggle" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:4px 10px;color:var(--header-text);font-size:13px;">🌓 主题</button>
+                <span class="kbd-hint">/ 搜索</span>
+                <span class="kbd-hint">N 添加</span>
+            </div>
+        </div>
+        <div class="toolbar">
+            <input id="search" placeholder="搜索名称、描述、关注内容… 支持 country:菲律宾 tag:户储">
+            <select id="priority"><option value="">全部优先级</option><option value="S">S级</option><option value="A">A级</option><option value="B">B级</option></select>
+            <select id="country"><option value="">全部地区</option></select>
+            <select id="category"><option value="">全部分类</option></select>
+            <select id="productTag"><option value="">全部产品标签</option><option>户储</option><option>混逆</option><option>电池</option><option>EMS</option><option>BESS</option><option>光伏</option><option>充电</option></select>
+            <select id="favoriteFilter"><option value="">全部网站</option><option value="fav">★ 我的收藏</option></select>
+            <div class="view-toggle" id="viewToggle">
+                <button data-view="grid" class="active" title="卡片视图">▦</button>
+                <button data-view="list" title="列表视图">☰</button>
+            </div>
+            <button class="primary" onclick="app.openAdd()">＋ 添加</button>
+            <button onclick="app.exportData()">📤 导出</button>
+            <button onclick="document.getElementById('importFile').click()">📥 导入</button>
+            <button onclick="app.batchCheck()" id="batchCheckBtn">🔄 批量检查</button>
+            <input id="importFile" type="file" accept=".json" style="display:none" onchange="app.importData(event)">
+        </div>
+    </header>
+
+    <!-- ============================================================
+    MAIN
+    ============================================================ -->
+    <main>
+        <div class="stats" id="statsContainer">
+            <div class="stat"><b id="total">0</b> 个网站</div>
+            <div class="stat"><b id="snum">0</b> S级</div>
+            <div class="stat"><b id="anum">0</b> A级</div>
+            <div class="stat"><b id="bnum">0</b> B级</div>
+            <div class="stat"><b id="customnum">0</b> 自定义</div>
+        </div>
+
+        <!-- 最近访问 -->
+        <div id="recentContainer" class="hidden" style="margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-bottom:4px;">
+                <span>🕐 最近访问</span>
+                <button onclick="app.clearRecent()" style="font-size:11px;color:var(--muted);background:none;border:none;text-decoration:underline;cursor:pointer;">清除</button>
+            </div>
+            <div class="recent-bar" id="recentBar"></div>
+        </div>
+
+        <div class="notice" id="noticeBar">
+            💡 建议：S级日常监控 · A级专题调研 · B级补充信息。自定义数据保存在浏览器本地。
+        </div>
+
+        <!-- 批量检查进度 -->
+        <div id="progressContainer" class="hidden" style="margin-bottom:16px;">
+            <div class="progress-wrap">
+                <span class="progress-label" id="progressLabel">0 / 0</span>
+                <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+                <span class="progress-label" id="progressStatus">准备中…</span>
+            </div>
+        </div>
+
+        <div id="content"></div>
+    </main>
+
+    <!-- ============================================================
+    MODAL (添加 / 编辑)
+    ============================================================ -->
+    <dialog id="dlg">
+        <div class="modal">
+            <h2 id="dlgTitle">添加网站</h2>
+            <div class="form">
+                <label>网站名称 <input id="f_name" placeholder="例如：某能源媒体"></label>
+                <div class="row">
+                    <label>国家/地区 <input id="f_country" placeholder="例如：菲律宾"></label>
+                    <label>优先级
+                        <select id="f_priority"><option>S</option><option>A</option><option>B</option></select>
+                    </label>
+                </div>
+                <div class="row">
+                    <label>分类
+                        <select id="f_category">
+                            <option>产品测评/实测</option><option>工程应用/技术</option>
+                            <option>政策/法规</option><option>市场/项目</option>
+                            <option>用户/安装商</option><option>菲律宾专项</option>
+                            <option>东南亚专项</option><option>其他</option>
+                        </select>
+                    </label>
+                    <label>网址 <input id="f_url" placeholder="https://example.com"></label>
+                </div>
+                <label>关注内容 <input id="f_focus" placeholder="例如：户储、混合逆变器、EMS、BESS"></label>
+                <label>备注 <textarea id="f_desc" placeholder="简要说明为什么值得关注"></textarea></label>
+                <input type="hidden" id="f_editId" value="">
+            </div>
+            <div class="modal-actions">
+                <button onclick="app.closeModal()">取消</button>
+                <button class="primary" onclick="app.saveSite()">保存</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- ============================================================
+    BULK BAR
+    ============================================================ -->
+    <div class="bulk-bar" id="bulkBar">
+        <span class="bulk-info" id="bulkInfo">已选 0 个</span>
+        <button class="primary" onclick="app.bulkFavorite()">⭐ 收藏</button>
+        <button class="primary" onclick="app.bulkUnfavorite()">☆ 取消收藏</button>
+        <button class="primary" onclick="app.bulkExport()">📤 导出选中</button>
+        <button class="danger" onclick="app.bulkDelete()">🗑 删除自定义</button>
+        <button onclick="app.clearBulk()">取消</button>
+    </div>
+
+    <!-- ============================================================
+    TOAST CONTAINER
+    ============================================================ -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        /**
+         * =============================================================
+         * JSDoc 类型定义
+         * =============================================================
+         * @typedef {Object} Site
+         * @property {string} id          - 唯一标识
+         * @property {string} name        - 网站名称
+         * @property {string} country     - 国家/地区
+         * @property {'S'|'A'|'B'} priority - 优先级
+         * @property {string} category    - 分类
+         * @property {string} url         - 网址
+         * @property {string} focus       - 关注内容
+         * @property {string} desc        - 备注/描述
+         * @property {boolean} custom     - 是否自定义
+         * @property {string[]} tags      - 产品标签
+         * @property {number} [createdAt] - 创建时间戳 (自定义站)
+         */
+
+        /**
+         * =============================================================
+         * 常量
+         * =============================================================
+         */
+        const PRODUCT_TAGS = ['户储', '混逆', '电池', 'EMS', 'BESS', '光伏', '充电'];
+
+        const BASE_SITES = [
+            ["IOTDomotica.nl", "荷兰", "S", "产品测评/实测", "https://iotdomotica.nl/",
+                "家庭电池、HEMS、Home Assistant、动态电价、API",
+                "真实家庭能源系统和智能控制，与你的户储/EMS竞品研究高度匹配"
+            ],
+            ["Clean Energy Reviews", "澳大利亚", "S", "产品测评/实测", "https://www.cleanenergyreviews.info/",
+                "混合逆变器、电池、离网、Backup、EMS", "工程师视角的产品Review和技术路线分析"
+            ],
+            ["Solar Choice", "澳大利亚", "S", "产品测评/实测", "https://www.solarchoice.net.au/",
+                "户储、电池、逆变器、HEMS、产品横评", "产品数据库、Review、安装商和市场信息"
+            ],
+            ["HTW Berlin", "德国", "S", "产品测评/实测", "https://solar.htw-berlin.de/en/research/energy-storage-inspection/",
+                "户储、混逆、电池、SPI、系统效率", "实验室实测，适合验证系统效率和部分负载性能"
+            ],
+            ["ITP Renewables", "澳大利亚", "S", "产品测评/实测", "https://batterytestcentre.com.au/",
+                "电池衰减、容量、故障、长期可靠性", "长期电池实证测试"
+            ],
+            ["SolarQuotes", "澳大利亚", "A", "用户/安装商", "https://www.solarquotes.com.au/",
+                "逆变器、电池、安装商、用户评价", "真实安装市场反馈"
+            ],
+            ["Off-Grid Energy Australia", "澳大利亚", "A", "工程应用/技术", "https://www.offgridenergy.com.au/",
+                "电池、逆变器、离网、Backup", "实际项目和系统级应用"
+            ],
+            ["Greenlight Solar", "澳大利亚", "A", "产品测评/实测", "https://www.greenlightsolar.com.au/",
+                "电池、混逆、户储", "产品Review、规格、应用"
+            ],
+            ["Connect Energy", "澳大利亚", "A", "用户/安装商", "https://connectenergy.com.au/",
+                "户储、BESS、实际项目", "安装商和项目视角"
+            ],
+            ["Energy Matters", "澳大利亚", "A", "产品测评/实测", "https://www.energymatters.com.au/",
+                "光伏、储能、智能能源", "家庭能源系统产品和市场"
+            ],
+            ["CHOICE", "澳大利亚", "A", "产品测评/实测", "https://www.choice.com.au/",
+                "消费者产品、能源产品", "消费者独立测试视角"
+            ],
+            ["review.solar", "海外", "A", "产品测评/实测", "https://review.solar/",
+                "电池、逆变器、组件", "产品评分和数据库"
+            ],
+            ["SolarReviews", "美国", "A", "产品测评/实测", "https://www.solarreviews.com/",
+                "光伏、逆变器、电池、安装商", "美国市场产品/用户评价"
+            ],
+            ["EnergyPal", "美国", "A", "产品测评/实测", "https://energypal.com/",
+                "光伏+储能产品/方案", "美国户储产品和方案"
+            ],
+            ["Electrek", "美国", "B", "市场/项目", "https://electrek.co/",
+                "Powerwall、家庭能源、EV", "家庭能源和EV市场动态"
+            ],
+            ["Energy-Storage.News", "全球/东南亚", "S", "工程应用/技术", "https://www.energy-storage.news/",
+                "BESS、PCS、EMS、项目、政策", "全球储能工程、项目、市场和政策"
+            ],
+            ["pv magazine", "全球", "S", "工程应用/技术", "https://www.pv-magazine.com/",
+                "光伏、储能、逆变器、政策、项目", "全球光储行业核心信息源"
+            ],
+            ["PV Tech", "全球", "S", "工程应用/技术", "https://www.pv-tech.org/",
+                "光伏、储能、供应链、项目", "产业链、技术和项目"
+            ],
+            ["ESS News", "全球", "A", "工程应用/技术", "https://www.ess-news.com/",
+                "储能技术、项目、市场", "储能专项媒体"
+            ],
+            ["Solar Power World", "美国", "A", "工程应用/技术", "https://www.solarpowerworldonline.com/",
+                "逆变器、BESS、安装、工程", "安装和工程应用"
+            ],
+            ["Solar Builder", "美国", "A", "工程应用/技术", "https://solarbuildermag.com/",
+                "光伏+储能系统设计、安装", "工程应用和产品"
+            ],
+            ["Utility Dive", "美国", "A", "工程应用/技术", "https://www.utilitydive.com/",
+                "电力市场、储能、电网", "公用事业和电网侧储能"
+            ],
+            ["POWER Magazine", "美国", "A", "工程应用/技术", "https://www.powermag.com/",
+                "电站、储能、电网", "电力工程"
+            ],
+            ["Power Engineering International", "全球", "A", "工程应用/技术", "https://www.powerengineeringint.com/",
+                "电力系统、储能、并网", "工程技术和电网"
+            ],
+            ["Asian Power", "亚洲", "A", "工程应用/技术", "https://asian-power.com/",
+                "亚洲电力、储能、项目、政策", "亚洲电力和能源项目"
+            ],
+            ["Renewable Energy Magazine", "全球", "B", "工程应用/技术", "https://www.renewableenergymagazine.com/",
+                "光伏、储能、能源转型", "新能源行业动态"
+            ],
+            ["Solar & Storage Live", "英国/全球", "B", "工程应用/技术",
+                "https://www.terrapinn.com/exhibition/solar-storage-live/index.stm",
+                "光伏、储能、产品、项目", "展会、产品和市场信息"
+            ],
+            ["ASEAN Centre for Energy", "东盟", "S", "政策/法规", "https://www.aseanenergy.org/",
+                "ASEAN能源政策、RE、储能、电网、数据", "东南亚区域官方/研究核心信息源"
+            ],
+            ["ASEAN Centre for Energy - Publications", "东盟", "S", "政策/法规",
+                "https://www.aseanenergy.org/publications",
+                "政策、报告、统计、研究", "可下载报告和政策文件"
+            ],
+            ["Philippines DOE", "菲律宾", "S", "政策/法规", "https://doe.gov.ph/",
+                "RE、BESS、Net Metering、能源政策", "菲律宾能源部官方政策"
+            ],
+            ["Philippines DOE - Policies & Programs", "菲律宾", "S", "政策/法规",
+                "https://new.doe.gov.ph/policies-programs",
+                "能源计划、RE、政策项目", "官方政策和计划入口"
+            ],
+            ["Philippines DOE - Energy Data", "菲律宾", "S", "政策/法规", "https://doe.gov.ph/site/eppb",
+                "能源统计、发电量、装机、能源数据", "官方统计和能源数据"
+            ],
+            ["Philippines ERC", "菲律宾", "S", "政策/法规", "https://www.erc.gov.ph/",
+                "Net Metering、DER、ESS、电价、并网", "菲律宾电力监管核心网站"
+            ],
+            ["NGCP", "菲律宾", "S", "工程应用/技术", "https://www.ngcp.ph/",
+                "Grid Code、电网、并网、辅助服务、BESS", "菲律宾输电系统和电网信息"
+            ],
+            ["Power Philippines", "菲律宾", "S", "市场/项目", "https://powerphilippines.com/",
+                "光伏、BESS、项目、政策、企业", "菲律宾本地电力行业媒体"
+            ],
+            ["Philippine Information Agency", "菲律宾", "A", "政策/法规", "https://pia.gov.ph/",
+                "DOE政策、能源项目、政府新闻", "政府新闻解释和政策落地信息"
+            ],
+            ["Philippine News Agency", "菲律宾", "A", "市场/项目", "https://www.pna.gov.ph/",
+                "能源项目、BESS、投资、政府", "菲律宾官方通讯社"
+            ],
+            ["BusinessWorld Online", "菲律宾", "A", "市场/项目", "https://www.bworldonline.com/",
+                "Meralco、电价、投资、能源企业", "菲律宾财经和能源市场"
+            ],
+            ["The Philippine Star", "菲律宾", "B", "市场/项目", "https://www.philstar.com/",
+                "能源政策、光伏、BESS", "综合媒体能源信息"
+            ],
+            ["SolarQuarter", "亚洲/菲律宾", "A", "市场/项目", "https://solarquarter.com/",
+                "太阳能、储能、项目、政策", "亚洲光储市场和项目"
+            ],
+            ["SEDA Malaysia", "马来西亚", "A", "政策/法规", "https://www.seda.gov.my/",
+                "Solar、RE、NEM、政策", "马来西亚可再生能源机构"
+            ],
+            ["Energy Commission Malaysia", "马来西亚", "A", "政策/法规", "https://www.st.gov.my/",
+                "电力监管、储能、电价", "马来西亚能源监管"
+            ],
+            ["MIDA Malaysia", "马来西亚", "A", "市场/项目", "https://www.mida.gov.my/",
+                "BESS、产业投资、制造、政策", "马来西亚投资和产业信息"
+            ],
+            ["EVN", "越南", "A", "工程应用/技术", "https://en.evn.com.vn/",
+                "电网、光伏、BESS、PDP8", "越南电力集团官方信息"
+            ],
+            ["Vietnam Ministry of Industry and Trade", "越南", "A", "政策/法规", "https://moit.gov.vn/",
+                "能源政策、PDP8、RE", "越南能源政策"
+            ],
+            ["EGAT", "泰国", "A", "工程应用/技术", "https://www.egat.co.th/home/en/",
+                "电网、储能、智能电网、项目", "泰国电力系统"
+            ],
+            ["Thailand Energy Regulatory Commission", "泰国", "A", "政策/法规", "https://www.erc.or.th/",
+                "电力政策、监管、储能", "泰国能源监管"
+            ],
+            ["PLN", "印度尼西亚", "A", "工程应用/技术", "https://www.pln.co.id/",
+                "电网、光伏、储能、岛屿能源", "印尼电力系统"
+            ],
+            ["Indonesia ESDM", "印度尼西亚", "A", "政策/法规", "https://www.esdm.go.id/",
+                "能源政策、RE、储能", "印尼能源矿产资源部"
+            ],
+            ["ID.nl", "荷兰", "A", "产品测评/实测", "https://id.nl/",
+                "家庭电池、智能能源、消费科技", "家庭能源产品连续测试"
+            ],
+            ["Energiebewust Ontwerpen", "比利时", "A", "产品测评/实测", "https://www.energiebewustontwerpen.be/",
+                "家庭电池、Plug&Play、能源管理", "家庭能源产品实际测试"
+            ],
+            ["TechPulse", "比利时", "B", "产品测评/实测", "https://techpulse.be/",
+                "智能能源、家庭电池、消费科技", "欧洲消费科技和能源产品"
+            ],
+            ["Solar Magazine", "荷兰", "A", "市场/项目", "https://solarmagazine.nl/",
+                "光伏、储能、逆变器、市场", "荷兰/欧洲光储行业"
+            ],
+            ["Recharge News", "全球", "B", "工程应用/技术", "https://www.rechargenews.com/",
+                "可再生能源、电网、储能", "能源转型和项目"
+            ],
+            ["EnergySage", "美国", "A", "产品测评/实测", "https://www.energysage.com/",
+                "光伏、储能、家庭能源", "美国消费者和产品市场"
+            ],
+        ];
+
+        /** 标签色彩映射 (用于 CSS 类) */
+        const TAG_COLOR_MAP = {
+            '户储': 'tag-户储',
+            '混逆': 'tag-混逆',
+            '电池': 'tag-电池',
+            'EMS': 'tag-EMS',
+            'BESS': 'tag-BESS',
+            '光伏': 'tag-光伏',
+            '充电': 'tag-充电'
+        };
+
+        /** =============================================================
+         *  工具函数
+         *  ============================================================= */
+        const Utils = {
+            /** 生成短id */
+            uid() { return 'c' + Date.now() + '_' + Math.random().toString(36).slice(2, 6); },
+
+            /** 安全转义HTML */
+            esc(s) {
+                if (!s) return '';
+                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+                return String(s).replace(/[&<>"']/g, m => map[m]);
+            },
+
+            /** 推断标签 */
+            inferTags(name, focus, category) {
+                const s = (name + ' ' + focus + ' ' + category).toLowerCase();
+                const map = [
+                    ['户储', /户储|家庭电池|home battery|residential|家庭储能|household/],
+                    ['混逆', /混合逆变|hybrid inverter|hybrid|混逆/],
+                    ['电池', /电池|battery|batteries/],
+                    ['EMS', /ems|hems|能源管理|energy management|home assistant/],
+                    ['BESS', /bess|储能系统|energy storage|battery energy storage/],
+                    ['光伏', /光伏|solar|pv|photovoltaic/],
+                    ['充电', /充电|ev|电动车|charger|charging/]
+                ];
+                return map.filter(x => x[1].test(s)).map(x => x[0]);
+            },
+
+            /** 校验URL */
+            isValidUrl(str) {
+                try {
+                    const u = new URL(str);
+                    return u.protocol === 'http:' || u.protocol === 'https:';
+                } catch { return false; }
+            },
+
+            /** 规范化URL */
+            normalizeUrl(str) {
+                str = str.trim();
+                if (!str) return '';
+                if (!/^https?:\/\//i.test(str)) return 'https://' + str;
+                return str;
+            },
+
+            /** 防抖 */
+            debounce(fn, delay = 300) {
+                let timer;
+                return function(...args) {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => fn.apply(this, args), delay);
+                };
+            },
+
+            /** 获取域名 (用于favicon) */
+            getDomain(url) {
+                try {
+                    const u = new URL(url);
+                    return u.hostname;
+                } catch { return ''; }
+            },
+
+            /** 格式化时间 */
+            formatTime(ts) {
+                if (!ts) return '';
+                const d = new Date(ts);
+                return d.toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            }
+        };
+
+        /** =============================================================
+         *  SiteRepository 类 (数据层)
+         *  ============================================================= */
+        class SiteRepository {
+            /**
+             * @param {string} storageKey - localStorage 键名
+             * @param {Site[]} baseSites - 基础数据
+             */
+            constructor(storageKey, baseSites) {
+                this.storageKey = storageKey;
+                this.baseSites = baseSites;
+                this._cache = null;
+                this._custom = null;
+                this._favorites = null;
+                this._updates = null;
+                this._recent = null;
+                this._load();
+            }
+
+            /** 从 localStorage 加载所有数据 */
+            _load() {
+                try {
+                    this._custom = JSON.parse(localStorage.getItem(this.storageKey + '_custom') || '[]');
+                    this._favorites = JSON.parse(localStorage.getItem(this.storageKey + '_favorites') || '[]');
+                    this._updates = JSON.parse(localStorage.getItem(this.storageKey + '_updates') || '{}');
+                    this._recent = JSON.parse(localStorage.getItem(this.storageKey + '_recent') || '[]');
+                } catch {
+                    this._custom = [];
+                    this._favorites = [];
+                    this._updates = {};
+                    this._recent = [];
+                }
+                this._buildCache();
+            }
+
+            _buildCache() {
+                const base = this.baseSites.map((x, i) => ({
+                    id: 'b' + i,
+                    name: x[0],
+                    country: x[1],
+                    priority: x[2],
+                    category: x[3],
+                    url: x[4],
+                    focus: x[5],
+                    desc: x[6],
+                    custom: false,
+                    tags: Utils.inferTags(x[0], x[5], x[3]),
+                    createdAt: null
+                }));
+                const custom = this._custom.map(s => ({
+                    ...s,
+                    custom: true,
+                    tags: s.tags || Utils.inferTags(s.name, s.focus, s.category)
+                }));
+                this._cache = [...base, ...custom];
+            }
+
+            /** 持久化 */
+            _persist() {
+                try {
+                    localStorage.setItem(this.storageKey + '_custom', JSON.stringify(this._custom));
+                    localStorage.setItem(this.storageKey + '_favorites', JSON.stringify(this._favorites));
+                    localStorage.setItem(this.storageKey + '_updates', JSON.stringify(this._updates));
+                    localStorage.setItem(this.storageKey + '_recent', JSON.stringify(this._recent));
+                } catch (e) {
+                    if (e.name === 'QuotaExceededError') {
+                        Utils.toast('存储空间不足，请清理部分数据', 'error');
+                    } else {
+                        console.warn('Persist error:', e);
+                    }
+                }
+                this._buildCache();
+            }
+
+            /** 获取所有站点 */
+            getAll() { return this._cache; }
+
+            /** 根据id获取 */
+            getById(id) { return this._cache.find(s => s.id === id); }
+
+            /** 添加自定义站点 */
+            add(site) {
+                const exists = this._custom.some(s => s.name === site.name && s.url === site.url);
+                if (exists) { throw new Error('该网站已存在 (名称+URL重复)'); }
+                const newSite = {
+                    ...site,
+                    id: Utils.uid(),
+                    custom: true,
+                    tags: site.tags || Utils.inferTags(site.name, site.focus, site.category),
+                    createdAt: Date.now()
+                };
+                this._custom.push(newSite);
+                this._persist();
+                return newSite;
+            }
+
+            /** 更新自定义站点 */
+            update(id, data) {
+                const idx = this._custom.findIndex(s => s.id === id);
+                if (idx === -1) throw new Error('未找到该自定义网站');
+                const old = this._custom[idx];
+                // 检测重名 (排除自身)
+                const dup = this._custom.some((s, i) => i !== idx && s.name === data.name && s.url === data.url);
+                if (dup) throw new Error('名称+URL 与其他网站重复');
+                const updated = { ...old, ...data, tags: data.tags || Utils.inferTags(data.name, data.focus, data
+                        .category) };
+                this._custom[idx] = updated;
+                this._persist();
+                return updated;
+            }
+
+            /** 删除自定义站点 */
+            remove(id) {
+                const idx = this._custom.findIndex(s => s.id === id);
+                if (idx === -1) return false;
+                this._custom.splice(idx, 1);
+                this._favorites = this._favorites.filter(fid => fid !== id);
+                delete this._updates[id];
+                this._persist();
+                return true;
+            }
+
+            /** 收藏切换 */
+            toggleFavorite(id) {
+                const idx = this._favorites.indexOf(id);
+                if (idx > -1) this._favorites.splice(idx, 1);
+                else this._favorites.push(id);
+                this._persist();
+                return this._favorites.includes(id);
+            }
+
+            /** 是否收藏 */
+            isFavorite(id) { return this._favorites.includes(id); }
+
+            /** 获取收藏列表 */
+            getFavorites() { return this._favorites; }
+
+            /** 批量收藏 */
+            bulkFavorite(ids) {
+                ids.forEach(id => { if (!this._favorites.includes(id)) this._favorites.push(id); });
+                this._persist();
+            }
+
+            /** 批量取消收藏 */
+            bulkUnfavorite(ids) {
+                this._favorites = this._favorites.filter(id => !ids.includes(id));
+                this._persist();
+            }
+
+            /** 获取更新缓存 */
+            getUpdate(id) { return this._updates[id] || null; }
+
+            /** 设置更新缓存 */
+            setUpdate(id, data) {
+                this._updates[id] = { ...data, timestamp: Date.now() };
+                this._persist();
+            }
+
+            /** 批量删除自定义 (仅限自定义站点) */
+            bulkRemove(ids) {
+                const toRemove = ids.filter(id => this._custom.some(s => s.id === id));
+                this._custom = this._custom.filter(s => !toRemove.includes(s.id));
+                this._favorites = this._favorites.filter(id => !toRemove.includes(id));
+                toRemove.forEach(id => delete this._updates[id]);
+                this._persist();
+                return toRemove.length;
+            }
+
+            /** 最近访问 */
+            addRecent(id) {
+                this._recent = this._recent.filter(r => r !== id);
+                this._recent.unshift(id);
+                if (this._recent.length > 20) this._recent = this._recent.slice(0, 20);
+                this._persist();
+            }
+            getRecent() { return this._recent; }
+            clearRecent() { this._recent = []; this._persist(); }
+
+            /** 导入 (智能合并) */
+            importSites(sites, strategy = 'skip') {
+                let added = 0,
+                    skipped = 0,
+                    conflicts = [];
+                const existing = this._custom;
+                for (const s of sites) {
+                    // 检查完全重复
+                    const dup = existing.some(e => e.name === s.name && e.url === s.url);
+                    if (dup) { skipped++; continue; }
+                    // 检查名称相同URL不同
+                    const nameConflict = existing.some(e => e.name === s.name && e.url !== s.url);
+                    if (nameConflict) {
+                        if (strategy === 'skip') { skipped++; continue; }
+                        if (strategy === 'overwrite') {
+                            // 覆盖: 删除旧的，添加新的
+                            const idx = existing.findIndex(e => e.name === s.name);
+                            if (idx > -1) existing.splice(idx, 1);
+                            // 继续添加
+                        } else if (strategy === 'keep') {
+                            // 保留两者: 直接添加
+                        }
+                        conflicts.push(s.name);
+                    }
+                    const newSite = {
+                        ...s,
+                        id: Utils.uid(),
+                        custom: true,
+                        tags: s.tags || Utils.inferTags(s.name, s.focus, s.category),
+                        createdAt: Date.now()
+                    };
+                    existing.push(newSite);
+                    added++;
+                }
+                this._persist();
+                return { added, skipped, conflicts };
+            }
+
+            /** 导出自定义数据 */
+            exportCustom() { return this._custom; }
+
+            /** 获取统计数据 */
+            getStats() {
+                const all = this._cache;
+                const s = all.filter(x => x.priority === 'S').length;
+                const a = all.filter(x => x.priority === 'A').length;
+                const b = all.filter(x => x.priority === 'B').length;
+                const custom = all.filter(x => x.custom).length;
+                return { total: all.length, s, a, b, custom };
+            }
+        }
+
+        /** =============================================================
+         *  Toast 系统
+         *  ============================================================= */
+        const Toast = {
+            container: null,
+            init() {
+                this.container = document.getElementById('toastContainer');
+            },
+            show(msg, type = 'info', duration = 3000) {
+                if (!this.container) this.init();
+                const el = document.createElement('div');
+                el.className = `toast ${type}`;
+                el.innerHTML = `<span>${Utils.esc(msg)}</span><button class="toast-close" onclick="this.parentElement.remove()">✕</button>`;
+                this.container.appendChild(el);
+                setTimeout(() => {
+                    if (el.parentElement) el.remove();
+                }, duration);
+            }
+        };
+        // 快捷方法
+        Utils.toast = (msg, type, duration) => Toast.show(msg, type, duration);
+
+        /** =============================================================
+         *  App 主控制器
+         *  ============================================================= */
+        class App {
+            constructor() {
+                this.repo = new SiteRepository('energySites', BASE_SITES);
+                this.state = {
+                    view: 'grid',
+                    filters: { search: '', priority: '', country: '', category: '', tag: '', fav: '' },
+                    sort: 'priority',
+                    selected: new Set(),
+                    bulkMode: false,
+                    checking: false,
+                };
+                this._renderTimer = null;
+                this._initUI();
+                this._bindEvents();
+                this._applyTheme();
+                this.render();
+            }
+
+            /** 初始化UI引用 */
+            _initUI() {
+                this.els = {
+                    search: document.getElementById('search'),
+                    priority: document.getElementById('priority'),
+                    country: document.getElementById('country'),
+                    category: document.getElementById('category'),
+                    productTag: document.getElementById('productTag'),
+                    favoriteFilter: document.getElementById('favoriteFilter'),
+                    content: document.getElementById('content'),
+                    stats: document.getElementById('statsContainer'),
+                    total: document.getElementById('total'),
+                    snum: document.getElementById('snum'),
+                    anum: document.getElementById('anum'),
+                    bnum: document.getElementById('bnum'),
+                    customnum: document.getElementById('customnum'),
+                    dlg: document.getElementById('dlg'),
+                    dlgTitle: document.getElementById('dlgTitle'),
+                    f_name: document.getElementById('f_name'),
+                    f_country: document.getElementById('f_country'),
+                    f_priority: document.getElementById('f_priority'),
+                    f_category: document.getElementById('f_category'),
+                    f_url: document.getElementById('f_url'),
+                    f_focus: document.getElementById('f_focus'),
+                    f_desc: document.getElementById('f_desc'),
+                    f_editId: document.getElementById('f_editId'),
+                    bulkBar: document.getElementById('bulkBar'),
+                    bulkInfo: document.getElementById('bulkInfo'),
+                    progressContainer: document.getElementById('progressContainer'),
+                    progressFill: document.getElementById('progressFill'),
+                    progressLabel: document.getElementById('progressLabel'),
+                    progressStatus: document.getElementById('progressStatus'),
+                    batchCheckBtn: document.getElementById('batchCheckBtn'),
+                    recentContainer: document.getElementById('recentContainer'),
+                    recentBar: document.getElementById('recentBar'),
+                    noticeBar: document.getElementById('noticeBar'),
+                    viewToggle: document.getElementById('viewToggle'),
+                    themeToggle: document.getElementById('themeToggle'),
+                    importFile: document.getElementById('importFile'),
+                };
+            }
+
+            /** 绑定事件 */
+            _bindEvents() {
+                // 搜索输入 (防抖)
+                const searchHandler = Utils.debounce(() => { this._updateFilters(); }, 250);
+                this.els.search.addEventListener('input', searchHandler);
+
+                // select 使用 change
+                ['priority', 'country', 'category', 'productTag', 'favoriteFilter'].forEach(id => {
+                    document.getElementById(id).addEventListener('change', () => { this._updateFilters(); });
+                });
+
+                // 视图切换
+                this.els.viewToggle.addEventListener('click', (e) => {
+                    const btn = e.target.closest('button');
+                    if (!btn) return;
+                    this.els.viewToggle.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    this.state.view = btn.dataset.view;
+                    this.render();
+                });
+
+                // 主题切换
+                this.els.themeToggle.addEventListener('click', () => {
+                    const root = document.documentElement;
+                    const isDark = root.classList.contains('dark');
+                    if (isDark) {
+                        root.classList.remove('dark');
+                        root.classList.add('light');
+                        localStorage.setItem('theme', 'light');
+                    } else {
+                        root.classList.remove('light');
+                        root.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                    }
+                });
+
+                // 模态框 - 点击backdrop关闭
+                this.els.dlg.addEventListener('click', (e) => {
+                    if (e.target === this.els.dlg) this.closeModal();
+                });
+
+                // 键盘快捷键
+                document.addEventListener('keydown', (e) => {
+                    // Ctrl+K 或 / 聚焦搜索
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                        e.preventDefault();
+                        this.els.search.focus();
+                        return;
+                    }
+                    if (e.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+                        e.preventDefault();
+                        this.els.search.focus();
+                        return;
+                    }
+                    if (e.key === 'Escape') {
+                        if (this.els.dlg.open) { this.closeModal(); return; }
+                        if (this.els.search.value) { this.els.search.value = '';
+                            this._updateFilters(); return; }
+                        if (this.state.selected.size) { this.clearBulk(); return; }
+                    }
+                    if (e.key === 'n' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+                        e.preventDefault();
+                        this.openAdd();
+                    }
+                });
+
+                // 批量复选框代理 (事件委托)
+                this.els.content.addEventListener('change', (e) => {
+                    const cb = e.target.closest('.card-checkbox input[type="checkbox"]');
+                    if (!cb) return;
+                    const id = cb.dataset.id;
+                    if (cb.checked) this.state.selected.add(id);
+                    else this.state.selected.delete(id);
+                    this._updateBulkBar();
+                });
+
+                // 全选逻辑: 在卡片渲染时通过 data 控制
+            }
+
+            /** 更新筛选器状态 */
+            _updateFilters() {
+                this.state.filters = {
+                    search: this.els.search.value.trim(),
+                    priority: this.els.priority.value,
+                    country: this.els.country.value,
+                    category: this.els.category.value,
+                    tag: this.els.productTag.value,
+                    fav: this.els.favoriteFilter.value,
+                };
+                this.render();
+            }
+
+            /** 获取筛选后的站点列表 + 排序 */
+            _getFilteredSites() {
+                const f = this.state.filters;
+                let list = this.repo.getAll();
+
+                // 高级搜索解析
+                const q = f.search;
+                let textQuery = q;
+                const parsed = { country: '', tag: '', priority: '', category: '' };
+                // 提取语义: country:菲律宾 tag:户储 priority:S category:政策
+                const matches = q.match(/(country|tag|priority|category):(\S+)/g);
+                if (matches) {
+                    matches.forEach(m => {
+                        const [key, val] = m.split(':');
+                        parsed[key] = val;
+                        textQuery = textQuery.replace(m, '').trim();
+                    });
+                }
+
+                // 基础筛选
+                list = list.filter(s => {
+                    // 普通文本搜索
+                    let matchText = true;
+                    if (textQuery) {
+                        const haystack = [s.name, s.country, s.category, s.focus, s.desc, (s.tags || []).join(' ')]
+                            .join(' ')
+                            .toLowerCase();
+                        matchText = haystack.includes(textQuery.toLowerCase());
+                    }
+                    if (!matchText) return false;
+
+                    // 语义筛选
+                    if (parsed.country && !s.country.toLowerCase().includes(parsed.country.toLowerCase())) return false;
+                    if (parsed.tag && !(s.tags || []).some(t => t.toLowerCase() === parsed.tag.toLowerCase()))
+                    return false;
+                    if (parsed.priority && s.priority !== parsed.priority) return false;
+                    if (parsed.category && !s.category.toLowerCase().includes(parsed.category.toLowerCase()))
+                    return false;
+
+                    // UI筛选
+                    if (f.priority && s.priority !== f.priority) return false;
+                    if (f.country && s.country !== f.country) return false;
+                    if (f.category && s.category !== f.category) return false;
+                    if (f.tag && !(s.tags || []).includes(f.tag)) return false;
+                    if (f.fav === 'fav' && !this.repo.isFavorite(s.id)) return false;
+                    return true;
+                });
+
+                // 排序
+                const sort = this.state.sort || 'priority';
+                const orderMap = { 'S': 0, 'A': 1, 'B': 2 };
+                if (sort === 'priority') {
+                    list.sort((a, b) => (orderMap[a.priority] || 3) - (orderMap[b.priority] || 3));
+                } else if (sort === 'name-asc') {
+                    list.sort((a, b) => a.name.localeCompare(b.name));
+                } else if (sort === 'name-desc') {
+                    list.sort((a, b) => b.name.localeCompare(a.name));
+                } else if (sort === 'country') {
+                    list.sort((a, b) => a.country.localeCompare(b.country));
+                } else if (sort === 'created') {
+                    list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                }
+                return list;
+            }
+
+            /** 渲染主界面 */
+            render() {
+                // 清除选中状态 (保留批量)
+                if (!this.state.bulkMode) this.state.selected.clear();
+
+                const list = this._getFilteredSites();
+                const stats = this.repo.getStats();
+
+                // 更新统计
+                this.els.total.textContent = stats.total;
+                this.els.snum.textContent = stats.s;
+                this.els.anum.textContent = stats.a;
+                this.els.bnum.textContent = stats.b;
+                this.els.customnum.textContent = stats.custom;
+
+                // 更新筛选器选项 (国家/分类)
+                this._populateFilters();
+
+                // 按分类分组
+                const groups = {};
+                list.forEach(s => {
+                    if (!groups[s.category]) groups[s.category] = [];
+                    groups[s.category].push(s);
+                });
+
+                const viewClass = this.state.view === 'list' ? 'list-view' : '';
+                let html = '';
+                const sortOptions = `
+                    <select id="sortSelect" onchange="app.state.sort=this.value;app.render();">
+                        <option value="priority" ${this.state.sort==='priority'?'selected':''}>按优先级</option>
+                        <option value="name-asc" ${this.state.sort==='name-asc'?'selected':''}>名称 A→Z</option>
+                        <option value="name-desc" ${this.state.sort==='name-desc'?'selected':''}>名称 Z→A</option>
+                        <option value="country" ${this.state.sort==='country'?'selected':''}>国家 A→Z</option>
+                        <option value="created" ${this.state.sort==='created'?'selected':''}>添加时间 (新→旧)</option>
+                    </select>
+                `;
+
+                if (Object.keys(groups).length === 0) {
+                    html = this._renderEmpty();
+                } else {
+                    html = Object.keys(groups).map(cat => {
+                        const items = groups[cat];
+                        return `
+                            <section class="category">
+                                <div class="cat-head">
+                                    <h2>${Utils.esc(cat)}</h2>
+                                    <div class="cat-meta">
+                                        <span>${items.length} 个</span>
+                                        ${sortOptions}
+                                    </div>
+                                </div>
+                                <div class="grid ${viewClass}">
+                                    ${items.map(s => this._renderCard(s)).join('')}
+                                </div>
+                            </section>
+                        `;
+                    }).join('');
+                }
+
+                this.els.content.innerHTML = html;
+
+                // 更新批量栏
+                this._updateBulkBar();
+
+                // 更新最近访问
+                this._renderRecent();
+
+                // 恢复选中状态
+                if (this.state.selected.size) {
+                    document.querySelectorAll('.card-checkbox input[type="checkbox"]').forEach(cb => {
+                        if (this.state.selected.has(cb.dataset.id)) cb.checked = true;
+                    });
+                }
+            }
+
+            /** 渲染单个卡片 */
+            _renderCard(s) {
+                const fav = this.repo.isFavorite(s.id);
+                const update = this.repo.getUpdate(s.id);
+                const iconUrl = `https://www.google.com/s2/favicons?domain=${Utils.getDomain(s.url)}&sz=32`;
+                const checked = this.state.selected.has(s.id) ? 'checked' : '';
+                const tagsHtml = (s.tags || []).map(t => {
+                    const cls = TAG_COLOR_MAP[t] || '';
+                    return `<span class="tag ${cls}">${Utils.esc(t)}</span>`;
+                }).join('');
+
+                const updatedHtml = update ?
+                    `最近检查：${Utils.esc(update.status || '')}${update.date ? ' · '+Utils.esc(update.date) : ''}` :
+                    '未检查';
+
+                const customActions = s.custom ? `
+                        <button onclick="app.editSite('${s.id}')">✎ 编辑</button>
+                        <button class="danger" onclick="app.deleteSite('${s.id}')">🗑 删除</button>
+                    ` : '';
+
+                // 打开链接时记录最近访问
+                const openUrl = `javascript:app.recordVisit('${s.id}');window.open('${Utils.esc(s.url)}','_blank');`;
+
+                return `
+                    <div class="card" data-id="${s.id}">
+                        <div class="card-top">
+                            <div class="card-checkbox">
+                                <input type="checkbox" data-id="${s.id}" ${checked}>
+                            </div>
+                            <div class="site-icon">
+                                <img src="${Utils.esc(iconUrl)}" alt="" loading="lazy" onerror="this.style.display='none'">
+                            </div>
+                            <div class="card-name">${Utils.esc(s.name)}</div>
+                            <span class="badge ${s.priority}">${s.priority}级</span>
+                            <button class="fav-btn ${fav?'on':''}" onclick="app.toggleFav('${s.id}')" title="收藏">${fav?'★':'☆'}</button>
+                        </div>
+                        <div class="card-meta">
+                            <span>${Utils.esc(s.country)}</span>
+                            <span>·</span>
+                            <span>${Utils.esc(s.category)}</span>
+                            ${s.custom ? '<span>· 自定义</span>' : ''}
+                            ${s.createdAt ? '<span>· '+Utils.formatTime(s.createdAt)+'</span>' : ''}
+                        </div>
+                        <div class="card-desc">${Utils.esc(s.desc)}</div>
+                        <div class="card-tags">${tagsHtml}</div>
+                        <div class="card-updated">${updatedHtml}</div>
+                        <div class="card-actions">
+                            <a href="javascript:void(0)" onclick="${openUrl}">打开网站 ↗</a>
+                            <button onclick="app.checkUpdate('${s.id}')">检查更新</button>
+                            ${customActions}
+                        </div>
+                    </div>
+                `;
+            }
+
+            /** 空状态 */
+            _renderEmpty() {
+                return `
+                    <div class="empty">
+                        <div class="empty-icon">🔍</div>
+                        <div class="empty-title">没有匹配的网站</div>
+                        <div style="color:var(--muted);font-size:14px;margin-bottom:8px;">
+                            试试调整筛选条件，或添加新的网站
+                        </div>
+                        <button onclick="app.clearFilters()">清除所有筛选</button>
+                        <button onclick="app.openAdd()" style="margin-left:8px;">＋ 添加网站</button>
+                    </div>
+                `;
+            }
+
+            /** 更新筛选器下拉选项 */
+            _populateFilters() {
+                const all = this.repo.getAll();
+                const countries = [...new Set(all.map(s => s.country))].sort((a, b) => a.localeCompare(b));
+                const cats = [...new Set(all.map(s => s.category))];
+
+                const countryEl = this.els.country;
+                const catEl = this.els.category;
+                const currentCountry = countryEl.value;
+                const currentCat = catEl.value;
+
+                if (countryEl.options.length <= 1) {
+                    countryEl.innerHTML = '<option value="">全部地区</option>' +
+                        countries.map(c => `<option value="${Utils.esc(c)}">${Utils.esc(c)}</option>`).join('');
+                }
+                if (catEl.options.length <= 1) {
+                    catEl.innerHTML = '<option value="">全部分类</option>' +
+                        cats.map(c => `<option value="${Utils.esc(c)}">${Utils.esc(c)}</option>`).join('');
+                }
+                // 恢复选中值
+                if (currentCountry) countryEl.value = currentCountry;
+                if (currentCat) catEl.value = currentCat;
+            }
+
+            /** 更新批量操作栏 */
+            _updateBulkBar() {
+                const count = this.state.selected.size;
+                const bar = this.els.bulkBar;
+                const info = this.els.bulkInfo;
+                if (count > 0) {
+                    bar.classList.add('show');
+                    info.textContent = `已选 ${count} 个`;
+                } else {
+                    bar.classList.remove('show');
+                }
+            }
+
+            /** 渲染最近访问 */
+            _renderRecent() {
+                const recents = this.repo.getRecent();
+                const container = this.els.recentContainer;
+                const bar = this.els.recentBar;
+                if (recents.length === 0) {
+                    container.classList.add('hidden');
+                    return;
+                }
+                container.classList.remove('hidden');
+                const sites = recents.map(id => this.repo.getById(id)).filter(Boolean);
+                bar.innerHTML = sites.map(s => {
+                    const icon = `https://www.google.com/s2/favicons?domain=${Utils.getDomain(s.url)}&sz=16`;
+                    return `
+                        <a class="recent-chip" href="javascript:void(0)" onclick="app.recordVisit('${s.id}');window.open('${Utils.esc(s.url)}','_blank');">
+                            <img src="${icon}" alt="" loading="lazy" onerror="this.style.display='none'">
+                            ${Utils.esc(s.name)}
+                        </a>
+                    `;
+                }).join('');
+            }
+
+            /** =============================================================
+             *  操作函数 (暴露给 HTML)
+             *  ============================================================= */
+
+            /** 切换收藏 */
+            toggleFav(id) {
+                this.repo.toggleFavorite(id);
+                this.render();
+            }
+
+            /** 检查更新 (单个) */
+            async checkUpdate(id) {
+                const s = this.repo.getById(id);
+                if (!s) return;
+                this.repo.setUpdate(id, { status: '检查中…', date: new Date().toLocaleString() });
+                this.render();
+                try {
+                    const r = await fetch(s.url, { method: 'HEAD', mode: 'cors', signal: AbortSignal.timeout(8000) });
+                    this.repo.setUpdate(id, {
+                        status: r.ok ? '✅ 可访问' : '⚠️ 返回异常',
+                        date: new Date().toLocaleString()
+                    });
+                } catch (e) {
+                    this.repo.setUpdate(id, {
+                        status: '🔒 跨域限制 (需打开查看)',
+                        date: new Date().toLocaleString()
+                    });
+                }
+                this.render();
+            }
+
+            /** 批量检查更新 */
+            async batchCheck() {
+                if (this.state.checking) return;
+                const all = this.repo.getAll();
+                const targets = all.slice(0, 60);
+                this.state.checking = true;
+                this.els.batchCheckBtn.disabled = true;
+                this.els.batchCheckBtn.innerHTML = '⏳ 检查中…';
+
+                const container = this.els.progressContainer;
+                const fill = this.els.progressFill;
+                const label = this.els.progressLabel;
+                const status = this.els.progressStatus;
+                container.classList.remove('hidden');
+
+                let completed = 0;
+                let success = 0,
+                    fail = 0,
+                    skip = 0;
+                const total = targets.length;
+
+                const updateOne = async (s) => {
+                    try {
+                        const r = await fetch(s.url, { method: 'HEAD', mode: 'cors', signal: AbortSignal.timeout(6000) });
+                        this.repo.setUpdate(s.id, {
+                            status: r.ok ? '✅ 可访问' : '⚠️ 异常',
+                            date: new Date().toLocaleString()
+                        });
+                        success++;
+                    } catch {
+                        this.repo.setUpdate(s.id, {
+                            status: '🔒 跨域限制',
+                            date: new Date().toLocaleString()
+                        });
+                        fail++;
+                    }
+                    completed++;
+                    const pct = Math.round((completed / total) * 100);
+                    fill.style.width = pct + '%';
+                    label.textContent = `${completed} / ${total}`;
+                    status.textContent = `✅${success} ⚠️${fail}`;
+                    // 每10个渲染一次
+                    if (completed % 3 === 0) this.render();
+                };
+
+                // 并发控制 (5个)
+                const concurrency = 5;
+                const queue = [...targets];
+                const workers = [];
+                for (let i = 0; i < concurrency; i++) {
+                    workers.push((async () => {
+                        while (queue.length) {
+                            const s = queue.shift();
+                            await updateOne(s);
+                        }
+                    })());
+                }
+                await Promise.all(workers);
+
+                container.classList.add('hidden');
+                this.state.checking = false;
+                this.els.batchCheckBtn.disabled = false;
+                this.els.batchCheckBtn.innerHTML = '🔄 批量检查';
+                this.render();
+                Utils.toast(`批量检查完成: ✅ ${success} 可访问, ⚠️ ${fail} 需手动查看`, 'success');
+            }
+
+            /** 添加网站 (打开模态框) */
+            openAdd() {
+                this.els.dlgTitle.textContent = '添加网站';
+                this.els.f_editId.value = '';
+                ['f_name', 'f_country', 'f_url', 'f_focus', 'f_desc'].forEach(id => document.getElementById(id).value = '');
+                this.els.f_priority.value = 'S';
+                this.els.f_category.value = '产品测评/实测';
+                this.els.dlg.showModal();
+                setTimeout(() => this.els.f_name.focus(), 50);
+            }
+
+            /** 编辑网站 */
+            editSite(id) {
+                const s = this.repo.getById(id);
+                if (!s || !s.custom) { Utils.toast('只能编辑自定义网站', 'error'); return; }
+                this.els.dlgTitle.textContent = '编辑网站';
+                this.els.f_editId.value = id;
+                this.els.f_name.value = s.name;
+                this.els.f_country.value = s.country;
+                this.els.f_priority.value = s.priority;
+                this.els.f_category.value = s.category;
+                this.els.f_url.value = s.url;
+                this.els.f_focus.value = s.focus || '';
+                this.els.f_desc.value = s.desc || '';
+                this.els.dlg.showModal();
+                setTimeout(() => this.els.f_name.focus(), 50);
+            }
+
+            /** 保存网站 (添加或编辑) */
+            saveSite() {
+                const name = this.els.f_name.value.trim();
+                const urlRaw = this.els.f_url.value.trim();
+                const url = Utils.normalizeUrl(urlRaw);
+                const editId = this.els.f_editId.value;
+
+                if (!name || !url) { Utils.toast('请填写名称和网址', 'error'); return; }
+                if (!Utils.isValidUrl(url)) { Utils.toast('URL 格式无效，请包含 http:// 或 https://', 'error'); return; }
+
+                const data = {
+                    name,
+                    country: this.els.f_country.value.trim() || '其他',
+                    priority: this.els.f_priority.value,
+                    category: this.els.f_category.value,
+                    url,
+                    focus: this.els.f_focus.value.trim() || '待补充',
+                    desc: this.els.f_desc.value.trim() || '自定义网站',
+                };
+
+                try {
+                    if (editId) {
+                        // 编辑
+                        this.repo.update(editId, data);
+                        Utils.toast('✅ 已更新', 'success');
+                    } else {
+                        // 添加
+                        this.repo.add(data);
+                        Utils.toast('✅ 已添加', 'success');
+                    }
+                    this.closeModal();
+                    this.render();
+                } catch (e) {
+                    Utils.toast(e.message || '操作失败', 'error');
+                }
+            }
+
+            /** 删除网站 (确认) */
+            deleteSite(id) {
+                const s = this.repo.getById(id);
+                if (!s || !s.custom) return;
+                if (confirm(`确定要删除 "${s.name}" 吗？`)) {
+                    this.repo.remove(id);
+                    this.state.selected.delete(id);
+                    this.render();
+                    Utils.toast(`已删除 "${s.name}"`, 'success');
+                }
+            }
+
+            /** 关闭模态框 */
+            closeModal() {
+                this.els.dlg.close();
+            }
+
+            /** 清除筛选 */
+            clearFilters() {
+                this.els.search.value = '';
+                this.els.priority.value = '';
+                this.els.country.value = '';
+                this.els.category.value = '';
+                this.els.productTag.value = '';
+                this.els.favoriteFilter.value = '';
+                this._updateFilters();
+                Utils.toast('已清除所有筛选', 'info');
+            }
+
+            /** 记录访问 (最近访问) */
+            recordVisit(id) {
+                this.repo.addRecent(id);
+                this._renderRecent();
+            }
+
+            /** 清除最近访问 */
+            clearRecent() {
+                this.repo.clearRecent();
+                this._renderRecent();
+            }
+
+            /** 导出数据 */
+            exportData() {
+                const data = this.repo.exportCustom();
+                if (data.length === 0) { Utils.toast('没有自定义数据可导出', 'warning'); return; }
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = '我的新能源网站池.json';
+                a.click();
+                URL.revokeObjectURL(a.href);
+                Utils.toast(`导出 ${data.length} 条自定义数据`, 'success');
+            }
+
+            /** 导入数据 */
+            importData(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                    try {
+                        const raw = JSON.parse(reader.result);
+                        if (!Array.isArray(raw)) throw new Error('数据格式错误');
+                        // 简单校验
+                        const valid = raw.filter(item => item.name && item.url);
+                        if (valid.length === 0) { Utils.toast('未找到有效的网站数据', 'error'); return; }
+                        // 智能合并 (使用skip策略)
+                        const result = this.repo.importSites(valid, 'skip');
+                        let msg = `导入完成: 新增 ${result.added} 条`;
+                        if (result.skipped > 0) msg += `，跳过 ${result.skipped} 条 (重复)`;
+                        if (result.conflicts.length > 0) msg += `，${result.conflicts.length} 个名称冲突已跳过`;
+                        Utils.toast(msg, 'success');
+                        this.render();
+                    } catch (err) {
+                        Utils.toast('导入失败: ' + err.message, 'error');
+                    }
+                };
+                reader.readAsText(file);
+                this.els.importFile.value = '';
+            }
+
+            /** 批量收藏 */
+            bulkFavorite() {
+                const ids = [...this.state.selected];
+                if (ids.length === 0) return;
+                this.repo.bulkFavorite(ids);
+                Utils.toast(`已收藏 ${ids.length} 个网站`, 'success');
+                this.clearBulk();
+                this.render();
+            }
+
+            /** 批量取消收藏 */
+            bulkUnfavorite() {
+                const ids = [...this.state.selected];
+                if (ids.length === 0) return;
+                this.repo.bulkUnfavorite(ids);
+                Utils.toast(`已取消收藏 ${ids.length} 个网站`, 'success');
+                this.clearBulk();
+                this.render();
+            }
+
+            /** 批量导出选中 */
+            bulkExport() {
+                const ids = [...this.state.selected];
+                if (ids.length === 0) return;
+                const sites = ids.map(id => this.repo.getById(id)).filter(Boolean);
+                if (sites.length === 0) { Utils.toast('未找到选中的网站', 'error'); return; }
+                const data = sites.map(s => ({ ...s, id: undefined, custom: true }));
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = '选中的网站.json';
+                a.click();
+                URL.revokeObjectURL(a.href);
+                Utils.toast(`导出 ${data.length} 个网站`, 'success');
+                this.clearBulk();
+            }
+
+            /** 批量删除 (仅自定义) */
+            bulkDelete() {
+                const ids = [...this.state.selected];
+                const customIds = ids.filter(id => {
+                    const s = this.repo.getById(id);
+                    return s && s.custom;
+                });
+                if (customIds.length === 0) { Utils.toast('选中的网站中没有可删除的自定义项', 'warning'); return; }
+                if (!confirm(`确定要删除选中的 ${customIds.length} 个自定义网站吗？`)) return;
+                const count = this.repo.bulkRemove(customIds);
+                Utils.toast(`已删除 ${count} 个自定义网站`, 'success');
+                this.clearBulk();
+                this.render();
+            }
+
+            /** 清除批量选择 */
+            clearBulk() {
+                this.state.selected.clear();
+                this.state.bulkMode = false;
+                this._updateBulkBar();
+                this.render();
+            }
+
+            /** 应用主题 */
+            _applyTheme() {
+                const saved = localStorage.getItem('theme');
+                const root = document.documentElement;
+                if (saved === 'dark') {
+                    root.classList.add('dark');
+                    root.classList.remove('light');
+                } else if (saved === 'light') {
+                    root.classList.add('light');
+                    root.classList.remove('dark');
+                } else {
+                    // 跟随系统，不添加额外类
+                    root.classList.remove('dark', 'light');
+                }
+            }
+        }
+
+        /** =============================================================
+         *  初始化
+         *  ============================================================= */
+        let app;
+        document.addEventListener('DOMContentLoaded', () => {
+            Toast.init();
+            app = new App();
+            // 暴露全局 (用于 onclick)
+            window.app = app;
+            // 第一次渲染后，初始化筛选器选项
+            app._populateFilters();
+        });
+
+        /** 修复 Safari 等浏览器的 dialog 兼容 */
+        if (typeof HTMLDialogElement === 'undefined') {
+            console.warn('Dialog not supported, fallback to polyfill? 请使用现代浏览器。');
+        }
+    </script>
+</body>
+</html>
